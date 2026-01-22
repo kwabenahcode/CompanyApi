@@ -11,7 +11,7 @@ class GetValuesAPI(generics.GenericAPIView):
     def get(self, request, *args, **kwargs):
         values = Value.objects.all()
         serializer = self.serializer_class(values, many=True)
-        return Response({"value": serializer.data}, status=200)
+        return Response({"values": serializer.data}, status=200)
 
 
 class GetTestimonialsAPI(generics.GenericAPIView):
