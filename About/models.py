@@ -15,14 +15,13 @@ class About(models.Model):
     about_us = models.TextField(blank=True)
 
     def __str__(self):
-        return self.strip_tags(self.about_us)[:10]
+        return self.about_us[:10] 
 
 class TrustedBy(models.Model):
     business_name = models.CharField(max_length=255, blank=True)
 
     def __str__(self):
         return self.business_name
-
 
 class DevTeam(models.Model):
     name = models.CharField(max_length=225, blank=True)
