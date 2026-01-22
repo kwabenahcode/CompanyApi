@@ -6,7 +6,7 @@ class Value(models.Model):
     content = models.TextField(blank=True, )
 
     def __str__(self):
-        return self.title
+        return self.title or 'No Title'
     
 class Testimonial(models.Model):
     client_name = models.CharField(max_length=150, blank=True)
