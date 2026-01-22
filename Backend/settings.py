@@ -11,16 +11,14 @@ https://docs.djangoproject.com/en/6.0/ref/settings/
 """
 
 from pathlib import Path
+from dotenv import load_dotenv
+import os
+
+# Load environment variables
+load_dotenv()
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
-
-
-# Quick-start development settings - unsuitable for production
-# See https://docs.djangoproject.com/en/6.0/howto/deployment/checklist/
-
-# SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-(c33!y)un@8i45y9$q)g8@!nh-!f+@xy^g92@*l8m1kwxf1)uj'
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -38,11 +36,13 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     # Custom
-    'ckeditor',
+    'rest_framework',
+    "corsheaders",
     'About',
     'Blog',
     'Home',
     'Service',
+    'Contact',
 ]
 
 MIDDLEWARE = [
@@ -121,3 +121,21 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/6.0/howto/static-files/
 
 STATIC_URL = 'static/'
+
+# Django Secret Key
+SECRET_KEY = os.environ.get('DJANGO_SECRET_KEY', '')
+
+# EMIAL CONFIGURATIONS
+MAIL_BACKEND= os.environ.get('MAIL_BACKEND', '')
+EMAIL_HOST= os.environ.get('EMAIL_HOST', '')
+EMAIL_USE_TLS= os.environ.get('EMAIL_USE_TLS', 'True') == 'True'
+EMAIL_PORT= int(os.environ.get('EMAIL_PORT', '547'))
+EMAIL_HOST_USER=os.environ.get('EMAIL_HOST_USER', 'info.oforitechsolutions@gmail.com')
+EMAIL_HOST_PASSWORD=os.environ.get('EMAIL_HOST_PASSWORD', '')
+
+# Company Info
+COMPANY_NAME = os.getenv('COMPANY_NAME', 'OFORITECH SOLUTIONS')
+COMPANY_EMAIL = os.getenv('COMPANY_EMAIL', 'info.oforitechsolutions@gmail.com')
+COMPANY_PHONE = os.getenv('COMPANY_PHONE', '')
+COMPANY_ADDRESS = os.getenv('COMPANY_ADDRESS', '')
+COMPANY_WEBSITE = os.getenv('COMPANY_WEBSITE', 'https://oforitechsolutions.com')

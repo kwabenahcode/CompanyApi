@@ -1,5 +1,4 @@
 from django.db import models
-from ckeditor.fields import RichTextField
 
 # Create your models here.
 class Founder(models.Model):
@@ -13,7 +12,7 @@ class Founder(models.Model):
     
 
 class About(models.Model):
-    about_us = RichTextField(blank=True)
+    about_us = models.TextField(blank=True)
 
     def __str__(self):
         return self.strip_tags(self.about_us)[:10]
