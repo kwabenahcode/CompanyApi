@@ -38,6 +38,7 @@ INSTALLED_APPS = [
     # Custom
     'rest_framework',
     "corsheaders",
+    'ckeditor',
     'About',
     'Blog',
     'Home',
