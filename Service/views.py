@@ -8,7 +8,7 @@ from rest_framework.response import Response
 class GetServiceAPI(generics.GenericAPIView):
     serializer_class = GetServiceSerializer
 
-    def get(self):
+    def get(self, request):
         services = Service.objects.all()
         serializer = self.serializer_class(services, many=True)
         return Response({"services":serializer.data}, status=200)
@@ -17,7 +17,7 @@ class GetServiceAPI(generics.GenericAPIView):
 class GetTopClientAPI(generics.GenericAPIView):
     serializer_class = GetTopClientSerializer
 
-    def get(self):
+    def get(self, request):
         topclients = TopClient.objects.all()
         serializer = self.serializer_class(topclients, many=True)
         return Response({"topclients": serializer.data}, status=200)
