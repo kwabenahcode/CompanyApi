@@ -1,0 +1,22 @@
+{% extends "admin/base_site.html" %}
+{% load static %}
+
+{% block extrastyle %}
+{{ block.super }}
+<link rel="stylesheet" href="{% static 'css/admin_theme.css' %}">
+{% endblock %}
+
+{% block extrahead %}
+{{ block.super }}
+<script src="{% static 'js/admin_theme.js' %}"></script>
+{% endblock %}
+
+{% block branding %}
+<h1 id="site-name">
+    <img src="{% static 'images/logo.png' %}" height="32" style="vertical-align: middle;">
+    OforiTech Solutions Admin
+</h1>
+<button id="theme-toggle" style="margin-left: 20px;">
+    Toggle
+</button>
+{% endblock %}

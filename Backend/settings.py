@@ -17,6 +17,13 @@ import os
 # Load environment variables
 load_dotenv()
 
+# from django.contrib import admin
+
+# admin.site.site_header = "Fusion Admin"
+# admin.site.site_title = "Fusion Control Panel"
+# admin.site.index_title = "Dashboard"
+
+
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -29,6 +36,7 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
+    'grappelli',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -44,7 +52,50 @@ INSTALLED_APPS = [
     'Home',
     'Service',
     'Contact',
+    
 ]
+
+# CKEDITOR SETTINGS
+CKEDITOR_CONFIGS = {
+    "default": {
+        "toolbar": "Custom",
+        "toolbar_Custom": [
+
+            # Text styles
+            ["Bold", "Italic", "Underline", "Strike", "Subscript", "Superscript"],
+
+            # Font controls
+            ["Font", "FontSize", "TextColor", "BGColor"],
+
+            # Paragraph formatting
+            ["Format", "Styles"],
+
+            # Alignment
+            ["JustifyLeft", "JustifyCenter", "JustifyRight", "JustifyBlock"],
+
+            # Lists
+            ["NumberedList", "BulletedList", "Outdent", "Indent"],
+
+            # Links
+            ["Link", "Unlink", "Anchor"],
+
+            # Insert content
+            ["Image", "Table", "HorizontalRule", "SpecialChar"],
+
+            # Clipboard
+            ["Cut", "Copy", "Paste", "PasteText", "PasteFromWord"],
+
+            # Undo / Redo
+            ["Undo", "Redo"],
+
+            # Cleanup
+            ["RemoveFormat"],
+
+            # Tools
+            ["Maximize", "ShowBlocks", "Source"],
+        ],
+    }
+}
 
 MIDDLEWARE = [
     # Custom
@@ -64,12 +115,35 @@ CORS_ALLOWED_ORIGINS = [
     "http://localhost:5173",
 ]
 
+CORS_ALLOW_CREDENTIALS = True
+
+CORS_ALLOW_METHODS = [
+    'DELETE',
+    'GET',
+    'OPTIONS',
+    'PATCH',
+    'POST',
+    'PUT',
+]
+
+CORS_ALLOW_HEADERS = [
+    'accept',
+    'accept-encoding',
+    'authorization',
+    'content-type',
+    'dnt',
+    'origin',
+    'user-agent',
+    'x-csrftoken',
+    'x-requested-with',
+]
+
 ROOT_URLCONF = 'Backend.urls'
 
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [BASE_DIR / 'templates'],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -129,7 +203,18 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/6.0/howto/static-files/
 
-STATIC_URL = 'static/'
+STATIC_URL = '/static/'
+
+STATICFILES_DIRS = [
+    BASE_DIR / 'static',
+]
+
+STATIC_ROOT = BASE_DIR / 'staticfiles'
+
+
+MEDIA_URL = '/media/'
+MEDIA_ROOT = BASE_DIR / 'media'
+
 
 # Django Secret Key
 SECRET_KEY = os.environ.get('DJANGO_SECRET_KEY', '')
@@ -148,3 +233,7 @@ COMPANY_EMAIL = os.getenv('COMPANY_EMAIL', 'info.oforitechsolutions@gmail.com')
 COMPANY_PHONE = os.getenv('COMPANY_PHONE', '')
 COMPANY_ADDRESS = os.getenv('COMPANY_ADDRESS', '')
 COMPANY_WEBSITE = os.getenv('COMPANY_WEBSITE', 'https://oforitechsolutions.com')
+
+# Increase request timeout
+DATA_UPLOAD_MAX_MEMORY_SIZE = 10485760  # 10MB
+FILE_UPLOAD_MAX_MEMORY_SIZE = 10485760  # 10MB

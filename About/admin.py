@@ -16,9 +16,11 @@ class AboutAdmin(admin.ModelAdmin):
     
     # Add a custom method to display preview
     def preview_about(self, obj):
-        return obj.about_us[:100] + "..." if len(obj.about_us) > 100 else obj.about_us
+        import re
+        text_only = re.sub('<[^<]+?>', '', obj.about_us)
+        return f"{text_only[:50]}..." if len(text_only) > 50 else text_only
+        # return obj.about_us[:100] + "..." if len(obj.about_us) > 100 else obj.about_us
     preview_about.short_description = "About Preview"
-
 admin.site.register(About, AboutAdmin)
 
 admin.site.register(TrustedBy)
