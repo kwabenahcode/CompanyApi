@@ -224,12 +224,12 @@ MAIL_BACKEND= os.environ.get('MAIL_BACKEND', '')
 EMAIL_HOST= os.environ.get('EMAIL_HOST', '')
 EMAIL_USE_TLS= os.environ.get('EMAIL_USE_TLS', 'True') == 'True'
 EMAIL_PORT= int(os.environ.get('EMAIL_PORT', '547'))
-EMAIL_HOST_USER=os.environ.get('EMAIL_HOST_USER', 'info.oforitechsolutions@gmail.com')
+EMAIL_HOST_USER=os.environ.get('EMAIL_HOST_USER', 'oforitechsolutions@gmail.com')
 EMAIL_HOST_PASSWORD=os.environ.get('EMAIL_HOST_PASSWORD', '')
 
 # Company Info
 COMPANY_NAME = os.getenv('COMPANY_NAME', 'OFORITECH SOLUTIONS')
-COMPANY_EMAIL = os.getenv('COMPANY_EMAIL', 'info.oforitechsolutions@gmail.com')
+COMPANY_EMAIL = os.getenv('COMPANY_EMAIL', 'oforitechsolutions@gmail.com')
 COMPANY_PHONE = os.getenv('COMPANY_PHONE', '')
 COMPANY_ADDRESS = os.getenv('COMPANY_ADDRESS', '')
 COMPANY_WEBSITE = os.getenv('COMPANY_WEBSITE', 'https://oforitechsolutions.com')
