@@ -1,9 +1,9 @@
-# contact/views.py - MODIFIED VERSION
+# contact/views.py - PROFESSIONAL VERSION
 from rest_framework import generics, status
 from rest_framework.response import Response
 from rest_framework.permissions import AllowAny
 import logging
-from django.conf import settings  # Add this
+from django.conf import settings
 
 from .models import ContactInquiry
 from .serializer import ContactSerializer
@@ -12,11 +12,12 @@ from .emails import EmailService
 logger = logging.getLogger(__name__)
 
 class ContactCreateView(generics.GenericAPIView):
+    """Professional contact form API with comprehensive error handling"""
     permission_classes = [AllowAny]
     serializer_class = ContactSerializer
     
     def post(self, request, *args, **kwargs):
-        # Validate the incoming data
+        # Step 1: Validate incoming data
         serializer = self.get_serializer(data=request.data)
         
         if not serializer.is_valid():
@@ -29,40 +30,24 @@ class ContactCreateView(generics.GenericAPIView):
                 status=status.HTTP_400_BAD_REQUEST
             )
         
+        # Step 2: Save contact to database
         try:
-            # Save to database
             contact = serializer.save()
-            logger.info(f"Contact saved: {contact.name} - {contact.email}")
+            logger.info(f"Contact saved successfully: {contact.name} - {contact.email}")
             
-            # --- REMOVE THREADING, SEND EMAILS DIRECTLY ---
-            try:
-                contact_data = {
-                    'name': contact.name,
-                    'email': contact.email,
-                    'phone': contact.phone or '',
-                    'message': contact.message,
-                    'created_at': contact.created_at,
-                }
-                
-                # DEBUG: Print email settings
-                logger.info(f"EMAIL_HOST_USER configured: {bool(settings.EMAIL_HOST_USER)}")
-                logger.info(f"EMAIL_HOST_PASSWORD configured: {bool(settings.EMAIL_HOST_PASSWORD)}")
-                
-                # Send notification to company
-                EmailService.send_contact_notification(contact_data)
-                logger.info("Company notification email sent")
-                
-                # Send auto-reply to client
-                EmailService.send_autoreply_to_client(contact_data)
-                logger.info("Client auto-reply email sent")
-                
-            except Exception as email_error:
-                # Log the actual SMTP error
-                logger.error(f"EMAIL FAILED: {str(email_error)}")
-                # Don't fail the request, just log it
-                pass
+            # Prepare contact data for emails
+            contact_data = {
+                'name': contact.name,
+                'email': contact.email,
+                'phone': contact.phone or 'Not provided',
+                'message': contact.message,
+                'created_at': contact.created_at,
+            }
             
-            # Prepare success response
+            # Step 3: Send emails synchronously (better error tracking)
+            email_success = self._send_emails(contact_data, contact.id)
+            
+            # Step 4: Prepare success response
             response_data = {
                 'success': True,
                 'message': 'Thank you for your message! We\'ll contact you within 24 hours.',
@@ -71,17 +56,64 @@ class ContactCreateView(generics.GenericAPIView):
                     'name': contact.name,
                     'email': contact.email,
                     'submitted_at': contact.created_at.strftime('%B %d, %Y at %I:%M %p'),
+                    'emails_sent': email_success,
                 }
             }
             
             return Response(response_data, status=status.HTTP_201_CREATED)
             
         except Exception as e:
-            logger.error(f"Contact form processing error: {e}")
+            logger.error(f"Contact form processing error: {str(e)}", exc_info=True)
             return Response(
                 {
                     'success': False,
-                    'message': 'An error occurred. Please try again.',
+                    'message': 'An error occurred while processing your request.',
+                    'error': str(e) if settings.DEBUG else None,
                 },
                 status=status.HTTP_500_INTERNAL_SERVER_ERROR
             )
+    
+    def _send_emails(self, contact_data, contact_id):
+        """Handle email sending with proper error tracking"""
+        email_results = {
+            'notification': False,
+            'autoreply': False
+        }
+        
+        try:
+            # Debug: Log email configuration
+            self._log_email_config()
+            
+            # Send notification to company
+            try:
+                EmailService.send_contact_notification(contact_data)
+                email_results['notification'] = True
+                logger.info(f"✅ Notification email sent for contact ID: {contact_id}")
+            except Exception as e:
+                logger.error(f"❌ Notification email failed for contact {contact_id}: {str(e)}")
+                if settings.DEBUG:
+                    raise  # Re-raise in development to see errors
+            
+            # Send auto-reply to client
+            try:
+                reference_id = EmailService.send_autoreply_to_client(contact_data)
+                email_results['autoreply'] = True
+                logger.info(f"✅ Auto-reply sent to {contact_data['email']} (Ref: {reference_id})")
+            except Exception as e:
+                logger.error(f"❌ Auto-reply failed for {contact_data['email']}: {str(e)}")
+                if settings.DEBUG:
+                    raise
+            
+            return email_results
+            
+        except Exception as e:
+            logger.error(f"❌ Email sending process failed: {str(e)}", exc_info=True)
+            return email_results
+    
+    def _log_email_config(self):
+        """Log email configuration for debugging"""
+        if settings.DEBUG:
+            logger.debug(f"Email Backend: {settings.EMAIL_BACKEND}")
+            logger.debug(f"Resend API Key Set: {bool(settings.RESEND_API_KEY)}")
+            logger.debug(f"Default From: {settings.DEFAULT_FROM_EMAIL}")
+            logger.debug(f"Company Email: {settings.COMPANY_EMAIL}")
