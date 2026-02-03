@@ -1,4 +1,4 @@
-# contact/emails.py - Simplified and robust
+# contact/emails.py - FIXED VERSION
 import logging
 from django.core.mail import EmailMultiAlternatives
 from django.template.loader import render_to_string
@@ -11,7 +11,7 @@ logger = logging.getLogger(__name__)
 class EmailService:
     @staticmethod
     def send_contact_notification(contact_data):
-        """Send notification to company - simplified"""
+        """Send notification to company"""
         try:
             context = {
                 'name': contact_data.get('name', ''),
@@ -27,24 +27,25 @@ class EmailService:
             email = EmailMultiAlternatives(
                 subject=f"📬 New Contact: {contact_data.get('name', 'Visitor')}",
                 body=text_content,
-                from_email=settings.EMAIL_HOST_USER,
+                from_email=settings.DEFAULT_FROM_EMAIL,  # Changed from EMAIL_HOST_USER
                 to=[settings.COMPANY_EMAIL],
                 reply_to=[contact_data.get('email', '')],
             )
             email.attach_alternative(html_content, "text/html")
             
-            # Quick send without checking too much
-            email.send(fail_silently=True)
-            logger.info(f"Notification email queued for {contact_data.get('email')}")
+            # ✅ CRITICAL FIX: Change to False to see errors
+            email.send(fail_silently=False)  # Changed from True
+            logger.info(f"✅ Notification email sent for {contact_data.get('email')}")
             return True
             
         except Exception as e:
-            logger.error(f"Email notification failed: {str(e)}")
-            return False
+            logger.error(f"❌ Email notification failed: {str(e)}")
+            # Don't swallow the exception - let it bubble up
+            raise
     
     @staticmethod
     def send_autoreply_to_client(contact_data):
-        """Send auto-reply to client - simplified"""
+        """Send auto-reply to client"""
         try:
             reference_id = str(uuid.uuid4())[:8].upper()
             
@@ -61,17 +62,17 @@ class EmailService:
             email = EmailMultiAlternatives(
                 subject="✅ Message Received - OFORITECH SOLUTIONS",
                 body=text_content,
-                from_email=settings.EMAIL_HOST_USER,
+                from_email=settings.DEFAULT_FROM_EMAIL,  # Changed from EMAIL_HOST_USER
                 to=[contact_data.get('email', '')],
                 reply_to=[settings.COMPANY_EMAIL],
             )
             email.attach_alternative(html_content, "text/html")
             
-            # Quick send
-            email.send(fail_silently=True)
-            logger.info(f"Autoreply queued for {contact_data.get('email')}")
+            # ✅ CRITICAL FIX: Change to False to see errors
+            email.send(fail_silently=False)  # Changed from True
+            logger.info(f"✅ Autoreply sent to {contact_data.get('email')}")
             return reference_id
             
         except Exception as e:
-            logger.error(f"Autoreply failed: {str(e)}")
-            return None
+            logger.error(f"❌ Autoreply failed: {str(e)}")
+            raise
