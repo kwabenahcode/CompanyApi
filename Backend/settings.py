@@ -276,7 +276,7 @@ if not DEBUG:
 
 # Add Resend configuration:
 RESEND_API_KEY = os.environ.get('RESEND_API_KEY', '')
-EMAIL_BACKEND = 'contact.resend_backend.ResendBackend'
+EMAIL_BACKEND = 'Contact.resend_backend.ResendBackend'
 DEFAULT_FROM_EMAIL = os.environ.get('DEFAULT_FROM_EMAIL', 'oforitechsolutions@gmail.com')
 COMPANY_EMAIL = os.environ.get('COMPANY_EMAIL', DEFAULT_FROM_EMAIL)
 
