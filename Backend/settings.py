@@ -127,14 +127,17 @@ MIDDLEWARE = [
     # Custom
     "corsheaders.middleware.CorsMiddleware",
     "django.middleware.common.CommonMiddleware",
+
     # Custom ends here
     'django.middleware.security.SecurityMiddleware',
-    'django.contrib.sessions.middleware.SessionMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.middleware.common.CommonMiddleware',
+    'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    
 ]
 
 CORS_ALLOWED_ORIGINS = [
@@ -227,6 +230,7 @@ USE_I18N = True
 
 USE_TZ = True
 
+# ----------STATIC FILES--------------------------
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/6.0/howto/static-files/
@@ -243,6 +247,17 @@ STATIC_ROOT = BASE_DIR / 'staticfiles'
 MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR / 'media'
 
+# =========== WHITENOISE CONFIGURATION ===========
+# Add this AFTER the static files section above
+
+# Only use WhiteNoise in production (when DEBUG=False)
+if not DEBUG:
+    STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+    
+    # Optional optimizations
+    WHITENOISE_MAX_AGE = 31536000  # Cache for 1 year
+    WHITENOISE_USE_FINDERS = True
+    WHITENOISE_MANIFEST_STRICT = False
 
 
 
