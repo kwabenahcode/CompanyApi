@@ -4,7 +4,7 @@ from .models import FeaturedBlog, Blog
 class GetFeaturedBlogsSerializer(serializers.ModelSerializer):
     class Meta:
         model = FeaturedBlog
-        fields = ["id", "name", "description", "link", "image", "featured_date"]
+        fields = ["id", "name", "description", "link", "image", "featured_date", ]
 
 class GetAllBlogsSerializer(serializers.ModelSerializer):
     class Meta:

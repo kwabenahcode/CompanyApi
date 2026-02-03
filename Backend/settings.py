@@ -27,10 +27,36 @@ load_dotenv()
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-# SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+# Django Secret Key
+SECRET_KEY = os.environ.get('DJANGO_SECRET_KEY')
 
+DEBUG = os.environ.get('DEBUG', 'False') == 'True'
+
+# Render automatically sets RENDER_EXTERNAL_HOSTNAME
+RENDER_EXTERNAL_HOSTNAME = os.environ.get('RENDER_EXTERNAL_HOSTNAME')
+
+# Initialize ALLOWED_HOSTS
 ALLOWED_HOSTS = []
+
+# Add Render hostname if available
+if RENDER_EXTERNAL_HOSTNAME:
+    ALLOWED_HOSTS.append(RENDER_EXTERNAL_HOSTNAME)
+
+# Also add your custom domain if you have one
+CUSTOM_DOMAIN = os.environ.get('CUSTOM_DOMAIN')
+if CUSTOM_DOMAIN:
+    ALLOWED_HOSTS.append(CUSTOM_DOMAIN)
+
+# For development/local
+if DEBUG:
+    ALLOWED_HOSTS.extend(['localhost', '127.0.0.1', '[::1]'])
+else:
+    # In production, also allow Render's service name without .onrender.com
+    if RENDER_EXTERNAL_HOSTNAME:
+        service_name = RENDER_EXTERNAL_HOSTNAME.replace('.onrender.com', '')
+        ALLOWED_HOSTS.append(service_name)
+
+# ALLOWED_HOSTS = ['companyapi-k2mx.onrender.com', ]
 
 
 # Application definition
@@ -113,6 +139,8 @@ MIDDLEWARE = [
 
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:5173",
+    "https://oforitech-solution-frontend.vercel.app",
+    
 ]
 
 CORS_ALLOW_CREDENTIALS = True
@@ -216,8 +244,7 @@ MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR / 'media'
 
 
-# Django Secret Key
-SECRET_KEY = os.environ.get('DJANGO_SECRET_KEY', '')
+
 
 # EMIAL CONFIGURATIONS
 MAIL_BACKEND= os.environ.get('MAIL_BACKEND', '')
