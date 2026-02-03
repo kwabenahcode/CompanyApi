@@ -265,17 +265,18 @@ if not DEBUG:
 # =========== EMAIL CONFIGURATION ===========
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = os.environ.get('EMAIL_HOST', 'smtp.gmail.com')
-EMAIL_PORT = int(os.environ.get('EMAIL_PORT', 587))  # Changed from '547' to 587
-EMAIL_USE_TLS = os.environ.get('EMAIL_USE_TLS', 'True') == 'True'
-EMAIL_USE_SSL = os.environ.get('EMAIL_USE_SSL', 'False') == 'False'
+EMAIL_PORT = int(os.environ.get('EMAIL_PORT', 587))  
+EMAIL_USE_TLS = True
+EMAIL_USE_SSL = False
 EMAIL_HOST_USER = os.environ.get('EMAIL_HOST_USER', '')
 EMAIL_HOST_PASSWORD = os.environ.get('EMAIL_HOST_PASSWORD', '')
 DEFAULT_FROM_EMAIL = EMAIL_HOST_USER  
-SERVER_EMAIL = EMAIL_HOST_USER  
+SERVER_EMAIL = EMAIL_HOST_USER 
+
+COMPANY_EMAIL = os.environ.get('COMPANY_EMAIL', EMAIL_HOST_USER)
 
 # Company Info
 COMPANY_NAME = os.getenv('COMPANY_NAME', 'OFORITECH SOLUTIONS')
-COMPANY_EMAIL = os.getenv('COMPANY_EMAIL', 'oforitechsolutions@gmail.com')
 COMPANY_PHONE = os.getenv('COMPANY_PHONE', '')
 COMPANY_ADDRESS = os.getenv('COMPANY_ADDRESS', '')
 COMPANY_WEBSITE = os.getenv('COMPANY_WEBSITE', 'https://oforitechsolutions.com')
