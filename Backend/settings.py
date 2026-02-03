@@ -262,12 +262,16 @@ if not DEBUG:
 
 
 # EMIAL CONFIGURATIONS
-MAIL_BACKEND= os.environ.get('MAIL_BACKEND', '')
-EMAIL_HOST= os.environ.get('EMAIL_HOST', '')
-EMAIL_USE_TLS= os.environ.get('EMAIL_USE_TLS', 'True') == 'True'
-EMAIL_PORT= int(os.environ.get('EMAIL_PORT', '547'))
-EMAIL_HOST_USER=os.environ.get('EMAIL_HOST_USER', 'oforitechsolutions@gmail.com')
-EMAIL_HOST_PASSWORD=os.environ.get('EMAIL_HOST_PASSWORD', '')
+# =========== EMAIL CONFIGURATION ===========
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = os.environ.get('EMAIL_HOST', 'smtp.gmail.com')
+EMAIL_PORT = int(os.environ.get('EMAIL_PORT', 587))  # Changed from '547' to 587
+EMAIL_USE_TLS = os.environ.get('EMAIL_USE_TLS', 'True') == 'True'
+EMAIL_USE_SSL = os.environ.get('EMAIL_USE_SSL', 'False') == 'False'
+EMAIL_HOST_USER = os.environ.get('EMAIL_HOST_USER', '')
+EMAIL_HOST_PASSWORD = os.environ.get('EMAIL_HOST_PASSWORD', '')
+DEFAULT_FROM_EMAIL = EMAIL_HOST_USER  
+SERVER_EMAIL = EMAIL_HOST_USER  
 
 # Company Info
 COMPANY_NAME = os.getenv('COMPANY_NAME', 'OFORITECH SOLUTIONS')
