@@ -143,7 +143,7 @@ MIDDLEWARE = [
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:5173",
     "https://oforitech-solution-frontend.vercel.app",
-    
+    "https://oforitech-solutions.vercel.app",
 ]
 
 CORS_ALLOW_CREDENTIALS = True
