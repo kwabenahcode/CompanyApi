@@ -33,7 +33,10 @@ SECRET_KEY = os.environ.get('DJANGO_SECRET_KEY')
 DEBUG = os.environ.get('DEBUG', 'False') == 'True'
 
 # Initialize ALLOWED_HOSTS
-ALLOWED_HOSTS = ['*']
+ALLOWED_HOSTS = [ 'OforiTech.pythonanywhere.com',  
+    'localhost',
+    '127.0.0.1',
+    ]
 
 # Application definition
 
