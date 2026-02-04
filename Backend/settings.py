@@ -102,8 +102,6 @@ CKEDITOR_CONFIGS = {
 MIDDLEWARE = [
     # Custom
     "corsheaders.middleware.CorsMiddleware",
-    "django.middleware.common.CommonMiddleware",
-
     # Custom ends here
     'django.middleware.security.SecurityMiddleware',
     'whitenoise.middleware.WhiteNoiseMiddleware',
