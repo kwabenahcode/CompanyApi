@@ -32,15 +32,15 @@ SECRET_KEY = os.environ.get('DJANGO_SECRET_KEY')
 
 DEBUG = os.environ.get('DEBUG', 'False') == 'True'
 
-# Render automatically sets RENDER_EXTERNAL_HOSTNAME
-RENDER_EXTERNAL_HOSTNAME = os.environ.get('RENDER_EXTERNAL_HOSTNAME')
+# # Render automatically sets RENDER_EXTERNAL_HOSTNAME
+# RENDER_EXTERNAL_HOSTNAME = os.environ.get('RENDER_EXTERNAL_HOSTNAME')
 
 # Initialize ALLOWED_HOSTS
 ALLOWED_HOSTS = []
 
-# Add Render hostname if available
-if RENDER_EXTERNAL_HOSTNAME:
-    ALLOWED_HOSTS.append(RENDER_EXTERNAL_HOSTNAME)
+# # Add Render hostname if available
+# if RENDER_EXTERNAL_HOSTNAME:
+#     ALLOWED_HOSTS.append(RENDER_EXTERNAL_HOSTNAME)
 
 # Also add your custom domain if you have one
 CUSTOM_DOMAIN = os.environ.get('CUSTOM_DOMAIN')
@@ -48,13 +48,13 @@ if CUSTOM_DOMAIN:
     ALLOWED_HOSTS.append(CUSTOM_DOMAIN)
 
 # For development/local
-if DEBUG:
-    ALLOWED_HOSTS.extend(['localhost', '127.0.0.1', '[::1]'])
-else:
-    # In production, also allow Render's service name without .onrender.com
-    if RENDER_EXTERNAL_HOSTNAME:
-        service_name = RENDER_EXTERNAL_HOSTNAME.replace('.onrender.com', '')
-        ALLOWED_HOSTS.append(service_name)
+# if DEBUG:
+#     ALLOWED_HOSTS.extend(['localhost', '127.0.0.1', '[::1]'])
+# else:
+#     # In production, also allow Render's service name without .onrender.com
+#     if RENDER_EXTERNAL_HOSTNAME:
+#         service_name = RENDER_EXTERNAL_HOSTNAME.replace('.onrender.com', '')
+#         ALLOWED_HOSTS.append(service_name)
 
 # ALLOWED_HOSTS = ['companyapi-k2mx.onrender.com', ]
 
@@ -263,33 +263,22 @@ if not DEBUG:
 
 # EMIAL CONFIGURATIONS
 # =========== EMAIL CONFIGURATION ===========
-# EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-# EMAIL_HOST = 'smtp.gmail.com'
-# EMAIL_PORT = 587
-# EMAIL_USE_TLS = True
-# EMAIL_HOST_USER = os.environ.get('EMAIL_HOST_USER')
-# EMAIL_HOST_PASSWORD = os.environ.get('EMAIL_HOST_PASSWORD')
-# DEFAULT_FROM_EMAIL = EMAIL_HOST_USER  
-# SERVER_EMAIL = EMAIL_HOST_USER 
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
+EMAIL_HOST_USER = os.environ.get('EMAIL_HOST_USER', '')
+EMAIL_HOST_PASSWORD = os.environ.get('EMAIL_HOST_PASSWORD', '')
 
-# COMPANY_EMAIL = os.environ.get('COMPANY_EMAIL', EMAIL_HOST_USER)
+COMPANY_EMAIL = os.environ.get('COMPANY_EMAIL', EMAIL_HOST_USER)
 
-# Add Resend configuration:
-RESEND_API_KEY = os.environ.get('RESEND_API_KEY', '')
-EMAIL_BACKEND = 'Contact.resend_backend.ResendBackend'
-DEFAULT_FROM_EMAIL = os.environ.get('DEFAULT_FROM_EMAIL', 'oforitechsolutions@gmail.com')
-COMPANY_EMAIL = os.environ.get('COMPANY_EMAIL', DEFAULT_FROM_EMAIL)
 
-# Optional: Add your company info
-COMPANY_NAME = os.getenv('COMPANY_NAME', 'OFORITECH SOLUTIONS')
-COMPANY_PHONE = os.getenv('COMPANY_PHONE', '')
-COMPANY_WEBSITE = os.getenv('COMPANY_WEBSITE', 'https://oforitechsolutions.com')
 
 # Company Info
-# COMPANY_NAME = os.getenv('COMPANY_NAME', 'OFORITECH SOLUTIONS')
-# COMPANY_PHONE = os.getenv('COMPANY_PHONE', '')
-# COMPANY_ADDRESS = os.getenv('COMPANY_ADDRESS', '')
-# COMPANY_WEBSITE = os.getenv('COMPANY_WEBSITE', 'https://oforitechsolutions.com')
+COMPANY_NAME = os.getenv('COMPANY_NAME', 'OFORITECH SOLUTIONS')
+COMPANY_PHONE = os.getenv('COMPANY_PHONE', '')
+COMPANY_ADDRESS = os.getenv('COMPANY_ADDRESS', '')
+COMPANY_WEBSITE = os.getenv('COMPANY_WEBSITE', 'https://oforitechsolutions.com')
 
 # Increase request timeout
 DATA_UPLOAD_MAX_MEMORY_SIZE = 10485760  # 10MB
